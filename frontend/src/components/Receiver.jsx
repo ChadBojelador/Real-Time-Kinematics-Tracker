@@ -94,6 +94,14 @@ function Receiver() {
     setIsPolling(false);
   };
 
+  const resetReceiver = () => {
+    setIsPolling(false);
+    setLocation(null);
+    setPreviousLocation(null);
+    setStats(null);
+    setError(null);
+  };
+
   useEffect(() => {
     let interval;
     if (isPolling) {
@@ -103,51 +111,61 @@ function Receiver() {
   }, [isPolling, location]);
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h2>GPS Receiver (Laptop)</h2>
-      
-      <div style={{ marginBottom: '20px' }}>
+    <div className="receiver-root">
+      <h2 className="section-title">GPS Receiver (Laptop)</h2>
+
+      <div style={{ marginBottom: '18px' }}>
         <button 
           onClick={startPolling} 
           disabled={isPolling}
-          style={{ marginRight: '10px', padding: '10px 20px' }}
+          className="btn btn-primary"
+          style={{ marginRight: 10 }}
         >
           Start Receiving
         </button>
         <button 
           onClick={stopPolling} 
           disabled={!isPolling}
-          style={{ padding: '10px 20px' }}
+          className="btn btn-ghost"
         >
           Stop Receiving
+        </button>
+        <button
+          onClick={resetReceiver}
+          className="btn btn-secondary"
+          style={{ marginLeft: 10 }}
+        >
+          Reset
         </button>
       </div>
 
       {error && (
-        <div style={{ color: 'red', marginBottom: '20px' }}>
-          <strong>Error:</strong> {error}
-        </div>
+        <div className="error"><strong>Error:</strong> {error}</div>
       )}
 
       {location && (
-        <div style={{ backgroundColor: '#f0f0f0', padding: '15px', borderRadius: '5px', marginBottom: '20px' }}>
-          <h3>Latest Location</h3>
-          <p><strong>Latitude:</strong> {location.latitude.toFixed(6)}</p>
-          <p><strong>Longitude:</strong> {location.longitude.toFixed(6)}</p>
-          <p><strong>Speed (from GPS):</strong> {location.speed ? `${location.speed.toFixed(2)} m/s` : 'N/A'}</p>
-          <p><strong>Timestamp:</strong> {new Date(location.timestamp).toLocaleString()}</p>
-          <p><strong>Received at server:</strong> {new Date(location.receivedAt).toLocaleString()}</p>
+        <div className="card" style={{ marginBottom: 16 }}>
+          <h3 style={{ marginTop: 0 }}>Latest Location</h3>
+          <div className="location-grid">
+            <div className="location-item"><strong>Latitude</strong><div className="small">{location.latitude.toFixed(6)}</div></div>
+            <div className="location-item"><strong>Longitude</strong><div className="small">{location.longitude.toFixed(6)}</div></div>
+            <div className="location-item"><strong>Speed (GPS)</strong><div className="small">{location.speed ? `${location.speed.toFixed(2)} m/s` : 'N/A'}</div></div>
+            <div className="location-item"><strong>Timestamp</strong><div className="small">{new Date(location.timestamp).toLocaleString()}</div></div>
+            <div className="location-item"><strong>Received at</strong><div className="small">{location.receivedAt ? new Date(location.receivedAt).toLocaleString() : 'N/A'}</div></div>
+          </div>
         </div>
       )}
 
       {stats && (
-        <div style={{ backgroundColor: '#e8f8f0', padding: '15px', borderRadius: '5px' }}>
-          <h3>Calculated Statistics</h3>
-          <p><strong>Distance from last point:</strong> {stats.distance} meters ({(stats.distance / 1000).toFixed(3)} km)</p>
-          <p><strong>Calculated Speed:</strong> {stats.speed} m/s ({(stats.speed * 3.6).toFixed(2)} km/h)</p>
-          <p><strong>Time between updates:</strong> {stats.timeDiff} seconds</p>
-          <p><strong>Velocity (latitude):</strong> {stats.velocity.lat} °/s</p>
-          <p><strong>Velocity (longitude):</strong> {stats.velocity.lon} °/s</p>
+        <div className="card">
+          <h3 style={{ marginTop: 0 }}>Calculated Statistics</h3>
+          <div className="stats">
+            <div className="location-item"><strong>Distance</strong><div className="small">{stats.distance} meters</div></div>
+            <div className="location-item"><strong>Calc Speed</strong><div className="small">{stats.speed} m/s ({(stats.speed * 3.6).toFixed(2)} km/h)</div></div>
+            <div className="location-item"><strong>Δ Time</strong><div className="small">{stats.timeDiff} s</div></div>
+            <div className="location-item"><strong>Vel Lat</strong><div className="small">{stats.velocity.lat} °/s</div></div>
+            <div className="location-item"><strong>Vel Lon</strong><div className="small">{stats.velocity.lon} °/s</div></div>
+          </div>
         </div>
       )}
     </div>
