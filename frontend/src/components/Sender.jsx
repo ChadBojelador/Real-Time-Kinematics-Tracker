@@ -27,7 +27,7 @@ function Sender() {
       });
       
       if (response.ok) {
-        setStatus('Location sent successfully at ' + new Date().toLocaleTimeString());
+        setStatus('Location sent at ' + new Date().toLocaleTimeString());
       } else {
         setError('Failed to send location');
       }
@@ -71,6 +71,17 @@ function Sender() {
     setStatus('Tracking stopped');
   };
 
+  const resetSender = () => {
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      setWatchId(null);
+    }
+    setIsTracking(false);
+    setLocation(null);
+    setError(null);
+    setStatus('Ready to track');
+  };
+
   useEffect(() => {
     return () => {
       if (watchId !== null) {
@@ -80,43 +91,49 @@ function Sender() {
   }, [watchId]);
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h2>GPS Sender (Phone)</h2>
-      
-      <div style={{ marginBottom: '20px' }}>
+    <div className="sender-root">
+      <h2 className="section-title">GPS Sender (Phone)</h2>
+
+      <div style={{ marginBottom: '18px' }}>
         <button 
           onClick={startTracking} 
           disabled={isTracking}
-          style={{ marginRight: '10px', padding: '10px 20px' }}
+          className="btn btn-primary"
+          style={{ marginRight: 10 }}
         >
           Start Tracking
         </button>
         <button 
           onClick={stopTracking} 
           disabled={!isTracking}
-          style={{ padding: '10px 20px' }}
+          className="btn btn-ghost"
         >
           Stop Tracking
         </button>
+        <button
+          onClick={resetSender}
+          className="btn btn-secondary"
+          style={{ marginLeft: 10 }}
+        >
+          Reset
+        </button>
       </div>
 
-      <div style={{ marginBottom: '20px' }}>
-        <strong>Status:</strong> {status}
-      </div>
+      <div className="status small">Status: {status}</div>
 
       {error && (
-        <div style={{ color: 'red', marginBottom: '20px' }}>
-          <strong>Error:</strong> {error}
-        </div>
+        <div className="error"><strong>Error:</strong> {error}</div>
       )}
 
       {location && (
-        <div style={{ backgroundColor: '#f0f0f0', padding: '15px', borderRadius: '5px' }}>
-          <h3>Current Location</h3>
-          <p><strong>Latitude:</strong> {location.latitude.toFixed(6)}</p>
-          <p><strong>Longitude:</strong> {location.longitude.toFixed(6)}</p>
-          <p><strong>Speed:</strong> {location.speed ? `${location.speed.toFixed(2)} m/s` : 'N/A'}</p>
-          <p><strong>Timestamp:</strong> {new Date(location.timestamp).toLocaleString()}</p>
+        <div className="card" style={{ background: 'linear-gradient(90deg,#e6fbff,#f0fff8)' }}>
+          <h3 style={{ marginTop: 0 }}>Current Location</h3>
+          <div className="location-grid">
+            <div className="location-item"><strong>Latitude</strong><div className="small">{location.latitude.toFixed(6)}</div></div>
+            <div className="location-item"><strong>Longitude</strong><div className="small">{location.longitude.toFixed(6)}</div></div>
+            <div className="location-item"><strong>Speed</strong><div className="small">{location.speed ? `${location.speed.toFixed(2)} m/s` : 'N/A'}</div></div>
+            <div className="location-item"><strong>Timestamp</strong><div className="small">{new Date(location.timestamp).toLocaleString()}</div></div>
+          </div>
         </div>
       )}
     </div>
