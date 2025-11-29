@@ -1,0 +1,436 @@
+.home-container {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #fff;
+  padding: 40px 20px;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Animated physics background */
+.physics-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Particle physics animation */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(125, 217, 215, 0.6);
+  border-radius: 50%;
+  animation: particleFloat 20s infinite;
+  box-shadow: 0 0 10px rgba(125, 217, 215, 0.5);
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty));
+    opacity: 0;
+  }
+}
+
+/* Velocity vector lines */
+.velocity-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(125, 217, 215, 0.3), transparent);
+  transform-origin: left center;
+  animation: velocityMove 8s linear infinite;
+}
+
+@keyframes velocityMove {
+  0% {
+    opacity: 0;
+    transform: translateX(0) scaleX(0);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100vw) scaleX(0.5);
+  }
+}
+
+/* Wave motion - sine/cosine waves */
+.wave-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  left: 0;
+  opacity: 0.2;
+}
+
+.wave-line::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 10px,
+    rgba(13, 173, 125, 0.3) 10px,
+    rgba(13, 173, 125, 0.3) 11px
+  );
+  animation: waveMove 15s linear infinite;
+}
+
+@keyframes waveMove {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Orbit paths - circular motion */
+.orbit {
+  position: absolute;
+  border: 1px dashed rgba(125, 217, 215, 0.15);
+  border-radius: 50%;
+  animation: orbitRotate 30s linear infinite;
+}
+
+@keyframes orbitRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.orbit-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(13, 173, 125, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(13, 173, 125, 0.6);
+  animation: orbitParticle 6s linear infinite;
+}
+
+@keyframes orbitParticle {
+  from {
+    transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
+  }
+}
+
+/* Acceleration arrows */
+.acceleration-arrow {
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(125, 217, 215, 0.4));
+  animation: accelerate 4s ease-in infinite;
+}
+
+.acceleration-arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid rgba(125, 217, 215, 0.4);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+@keyframes accelerate {
+  0% {
+    transform: translateX(0) scaleX(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200px) scaleX(2);
+    opacity: 0;
+  }
+}
+
+
+.physics-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(125, 217, 215, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 217, 215, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+.home-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-section {
+  text-align: center;
+  padding: 60px 20px;
+  margin-bottom: 60px;
+}
+
+.hero-title {
+  font-size: 4rem;
+  margin: 0 0 20px 0;
+  background: linear-gradient(135deg, #7dd9d7 0%, #0dad7d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: #cfeff0;
+  margin: 0 0 16px 0;
+  font-weight: 500;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: #888;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 80px;
+  padding: 0 20px;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(125, 217, 215, 0.3);
+  box-shadow: 0 12px 32px rgba(125, 217, 215, 0.1);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.feature-card h3 {
+  font-size: 1.3rem;
+  margin: 0 0 12px 0;
+  color: #7dd9d7;
+}
+
+.feature-card p {
+  font-size: 0.95rem;
+  color: #aaa;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.cta-section {
+  text-align: center;
+  padding: 60px 20px;
+  margin-bottom: 60px;
+  background: rgba(125, 217, 215, 0.05);
+  border-radius: 20px;
+  border: 1px solid rgba(125, 217, 215, 0.1);
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  margin: 0 0 32px 0;
+  color: #fff;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 240px;
+}
+
+.cta-primary {
+  background: linear-gradient(135deg, #7dd9d7 0%, #0dad7d 100%);
+  color: #061616;
+}
+
+.cta-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(125, 217, 215, 0.3);
+}
+
+.cta-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(125, 217, 215, 0.5);
+  transform: translateY(-4px);
+}
+
+.info-section {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.info-section h3 {
+  font-size: 2rem;
+  text-align: center;
+  margin: 0 0 40px 0;
+  color: #7dd9d7;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.step {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(125, 217, 215, 0.2);
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #7dd9d7 0%, #0dad7d 100%);
+  color: #061616;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step h4 {
+  font-size: 1.3rem;
+  margin: 0 0 8px 0;
+  color: #fff;
+}
+
+.step p {
+  font-size: 1rem;
+  color: #aaa;
+  margin: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-section h2 {
+    font-size: 2rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .step {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
